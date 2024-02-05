@@ -27,9 +27,10 @@ def expanding():
 
 def main():
   st.title('STOCK ANALYSER - TIME SERIES')
+  st.header('STOCK DATA')
   stock = st.selectbox('Select Stock', ['AAPL', 'AMZN', 'GOOG', 'IBM', 'MSFT'])
-  sd = dt.datetime(2000,1,1)
-  ed = dt.datetime(2020,1,1)
+  sd = st.date_input('Select Start Date', min_value=dt.date(1997,1,1), max_value=dt.date(2035, 1, 1), value=None, key='start')
+  ed = st.date_input('Select End Date', min_value=dt.date(1997,1,1), max_value=dt.date(2035, 1, 1), value=None, key='end')
   st.subheader('Data')
   data = reading_data(stock, sd,ed)
 
