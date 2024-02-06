@@ -1,3 +1,5 @@
+matplotlib==3.8.2
+numpy==1.26.3
 pandas==2.1.4
 pandas-datareader==0.10.0
 streamlit==1.31.0
