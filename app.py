@@ -23,8 +23,15 @@ def basic_plots(data, tag):
   st.line_chart(data[tag])
   
 # ----ROLLING----
-def rolling():
-  pass
+def rolling(data, tag, window, min_period):
+  rolled = data[tag].rolling(window, min_period).mean()
+  col1, col2 = st.columns(2)
+  col1.dataframe(rolled.head(15))
+  col2.line_chart(rolled, use_container_width=False)
+
+  data['Open Rolling'] = rolled
+  st.dataframe(data.head())
+  st.pyplot(data[['Open', 'Open Rolling']].plot(figsize=(15,5)).figure)
 
 # ----EXPANDING----
 def expanding(data, tag):
@@ -53,9 +60,15 @@ def main():
     basic_plots(data, tag)
 
     st.markdown('---')
+    st.header('ROLLING')
+    col3, col4 = st.columns(2)
+    window = col3.number_input('Enter Window Size', key='window_size', step=1)
+    min_period = col4.number_input('Enter Min Period', key='min_period', step=1)
+    rolling(data, tag, window, min_period)
+
+    st.markdown('---')
     st.header("EXPANDING")
     expanding(data, tag)
-
 
 if __name__ == '__main__':
   main()
