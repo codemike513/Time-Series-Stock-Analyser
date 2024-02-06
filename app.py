@@ -27,8 +27,11 @@ def rolling():
   pass
 
 # ----EXPANDING----
-def expanding():
-  pass
+def expanding(data, tag):
+  expanded = data[tag].expanding().mean()
+  col1, col2 = st.columns(2)
+  col1.dataframe(expanded.head(15))
+  col2.line_chart(expanded, use_container_width=False)
 
 # ----MAIN FUNCTION----
 def main():
@@ -48,6 +51,10 @@ def main():
     st.subheader('Plots')
     tag = st.selectbox('Select the data to plot', data.columns)
     basic_plots(data, tag)
+
+    st.markdown('---')
+    st.header("EXPANDING")
+    expanding(data, tag)
 
 
 if __name__ == '__main__':
