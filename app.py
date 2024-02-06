@@ -4,6 +4,13 @@ import streamlit as st
 import datetime as dt
 import pandas_datareader as pdr
 
+# --- PAGE SETTINGS AND STYLING ---
+page_title = "Stock Analyser - Time Series"
+page_icon = ":chart_with_upwards_trend:"
+icon = ':chart_with_downwards_trend:'
+
+st.set_page_config(page_title, page_icon)
+
 # ----READING DATA----
 def reading_data(stock, sd, ed):
   data = pdr.DataReader(stock, 'stooq', sd, ed)
@@ -28,13 +35,14 @@ def limit_plots(data, tag, xs, xe, ys, ye):
 # ----ROLLING----
 def rolling(data, tag, window, min_period):
   rolled = data[tag].rolling(window, min_period).mean()
-  col1, col2 = st.columns(2)
-  col1.dataframe(rolled.head(15))
-  col2.line_chart(rolled, use_container_width=False)
+  if window:
+    col1, col2 = st.columns(2)
+    col1.dataframe(rolled.head(15))
+    col2.line_chart(rolled, use_container_width=False)
 
-  data['Open Rolling'] = rolled
-  st.dataframe(data.head())
-  st.pyplot(data[['Open', 'Open Rolling']].plot(figsize=(15,5)).figure)
+    data['Open Rolling'] = rolled
+    st.dataframe(data.head())
+    st.pyplot(data[['Open', 'Open Rolling']].plot(figsize=(15,5)).figure)
 
 # ----EXPANDING----
 def expanding(data, tag):
@@ -45,7 +53,8 @@ def expanding(data, tag):
 
 # ----MAIN FUNCTION----
 def main():
-  st.title('STOCK ANALYSER - TIME SERIES')
+  st.title(f'{page_title} {page_icon}{icon}')
+  st.subheader('By Mihir Pesswani')
   st.header('STOCK DATA')
 
   stock = st.selectbox('Select Stock', ['Choose an option', 'AAPL', 'AMZN', 'GOOG', 'IBM', 'MSFT'])
